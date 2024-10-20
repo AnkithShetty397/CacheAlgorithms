@@ -4,16 +4,16 @@
 using namespace std;
 
 struct Node{
-    int key;
-    int val;
+    string key;
+    string val;
     Node* prev;
     Node* next;
-    Node(int key,int val):key(key),val(val),next(NULL),prev(NULL){}
+    Node(string key,string val):key(key),val(val),next(NULL),prev(NULL){}
 };
 
 class LRU{
 private:
-    unordered_map<int,Node*> cache;
+    unordered_map<string,Node*> cache;
     Node* right;
     Node* left;
     int capacity;
@@ -32,21 +32,21 @@ public:
     LRU(int capacity){
         this->capacity=capacity;
         this->cache.clear();
-        left = new Node(0,0);
-        right = new Node(0,0);
+        left = new Node("","");
+        right = new Node("","");
         left->next=right;
         right->prev=left;
     }
-    int get(int key){
+    string get(string key){
         if(cache.find(key)!=cache.end()){
             cout<<"Most recently used "<<cache[key]->key<<":"<<cache[key]->val<<endl;
             removeNode(cache[key]);
             insertNode(cache[key]);
             return cache[key]->val;
         }
-        return -1;
+        return "";
     }
-    void put(int key,int val){
+    void put(string key,string val){
         if(cache.find(key)!=cache.end()){
             removeNode(cache[key]);
         }
@@ -72,15 +72,15 @@ public:
 
 int main(){
     LRU* c = new LRU(3);
-    c->put(10,23432);
-    c->put(20,52323);
-    c->put(30,34454);
+    c->put("10","23432");
+    c->put("20","52323");
+    c->put("30","34454");
     c->printElements();
-    c->put(40,54345);
+    c->put("40","54345");
     c->printElements();
-    c->get(20);
+    c->get("20");
     c->printElements();
-    c->put(50,44354);
+    c->put("50","44354");
     c->printElements();
     return 0;
 }
